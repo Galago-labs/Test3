@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+/* Everything below is unlayered by default, which — per the CSS Cascade
+   Layers spec — would make it win over ALL of Tailwind's utilities
+   (including responsive ones like `lg:hidden`) regardless of specificity or
+   source order, since unlayered styles always beat layered ones. Explicitly
+   placing our own rules in `base`/`components` keeps Tailwind's `utilities`
+   layer (declared by the `@import` above) properly on top, so e.g. `lg:hidden`
+   can always override a component class like `.btn` that also sets `display`.
+   This bit us for real: a `lg:hidden` hamburger button stayed visible on
+   desktop because `.btn`'s unlayered `display: inline-flex` silently beat it. */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Baloo 2", system-ui, sans-serif;
+    background: #1a1410;
+    overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #7a6547;
+    border-radius: 8px;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: "Luckiest Guy", "Baloo 2", cursive;
+    letter-spacing: 0.03em;
+  }
+
+  /* ---------- wooden / stone panels ---------- */
+  .panel-stone {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.25)),
+      repeating-linear-gradient(115deg, #3b332c 0 6px, #383029 6px 12px);
+    border: 4px solid #6c5a44;
+    border-radius: 18px;
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -6px 14px rgba(0, 0, 0, 0.5),
+      0 12px 26px rgba(0, 0, 0, 0.55);
+  }
+
+  .panel-wood {
+    background: linear-gradient(180deg, #a9702f 0%, #8a531f 45%, #6d3f16 100%);
+    border: 4px solid #56320f;
+    border-radius: 14px;
+    box-shadow:
+      inset 0 3px 0 rgba(255, 216, 150, 0.35),
+      inset 0 -5px 10px rgba(0, 0, 0, 0.45),
+      0 8px 18px rgba(0, 0, 0, 0.45);
+  }
+
+  .panel-dark {
+    background: linear-gradient(180deg, rgba(20, 16, 13, 0.92), rgba(35, 29, 24, 0.92));
+    border: 3px solid #5a4a38;
+    border-radius: 14px;
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.08),
+      0 6px 14px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Translucent glass panel for HUD pieces that float ON TOP of the map (not
+     a bounded card beside/below it) — lets the map art show through slightly,
+     unlike the opaque .panel-stone used for full-screen cards. */
+  .panel-hud {
+    background: linear-gradient(180deg, rgba(20, 16, 13, 0.82), rgba(15, 12, 10, 0.88));
+    border: 3px solid rgba(108, 90, 68, 0.75);
+    border-radius: 16px;
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.08),
+      0 10px 22px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  /* ---------- chunky buttons ---------- */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border-radius: 12px;
+    padding: 0.5rem 1.1rem;
+    font-weight: 800;
+    color: #fff8e7;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+    border: 3px solid rgba(0, 0, 0, 0.45);
+    box-shadow:
+      inset 0 3px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -5px 0 rgba(0, 0, 0, 0.3),
+      0 5px 0 rgba(0, 0, 0, 0.4),
+      0 8px 14px rgba(0, 0, 0, 0.4);
+    transition:
+      transform 0.08s ease,
+      filter 0.15s ease;
+  }
+  .btn:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow:
+      inset 0 3px 0 rgba(255, 255, 255, 0.25),
+      inset 0 -3px 0 rgba(0, 0, 0, 0.3),
+      0 1px 0 rgba(0, 0, 0, 0.4);
+  }
+  .btn:disabled {
+    filter: grayscale(0.75) brightness(0.7);
+    cursor: not-allowed;
+  }
+  .btn-green {
+    background: linear-gradient(180deg, #8fd44a 0%, #5da61f 55%, #3f7d13 100%);
+  }
+  .btn-orange {
+    background: linear-gradient(180deg, #ffb63c 0%, #f08113 55%, #c25c07 100%);
+  }
+  .btn-blue {
+    background: linear-gradient(180deg, #63d2ff 0%, #2b93de 55%, #1a68ab 100%);
+  }
+  .btn-gray {
+    background: linear-gradient(180deg, #7d7468 0%, #574f45 55%, #3d372f 100%);
+  }
+  .btn-red {
+    background: linear-gradient(180deg, #ff8a72 0%, #e04a2b 55%, #a8300f 100%);
+  }
+
+  .chip {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.75));
+    border: 2px solid #6b5a45;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .text-outline {
+    text-shadow:
+      0 2px 0 rgba(0, 0, 0, 0.6),
+      0 0 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .glow-gold {
+    box-shadow:
+      0 0 0 3px rgba(255, 208, 92, 0.55),
+      0 0 26px rgba(255, 190, 60, 0.6);
+  }
+
+  .animate-floaty {
+    animation: floaty 3.2s ease-in-out infinite;
+  }
+
+  .animate-popin {
+    animation: popin 0.25s ease-out;
+  }
+
+  .animate-floatup {
+    animation: floatup 1s ease-out forwards;
+  }
+
+  .animate-junk {
+    animation: junkpop 0.22s ease-out;
+  }
+
+  .shine {
+    background-image: linear-gradient(
+      100deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 65%
+    );
+    background-size: 200% 100%;
+    animation: shine 2.6s linear infinite;
+  }
+}
+
+/* ---------- animations (keyframes aren't selectors, so they don't
+   participate in cascade-layer priority the way class rules do — no need to
+   layer these themselves, only the classes above that use them) ---------- */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes popin {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes floatup {
+  0% {
+    transform: translateY(0) scale(0.9);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes junkpop {
+  0% {
+    transform: scale(0.2) rotate(-20deg);
+  }
+  60% {
+    transform: scale(1.12) rotate(6deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
